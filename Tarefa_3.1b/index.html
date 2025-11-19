@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="js/script.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!------- Header ------>
+    <header class="header-area">
+      <div class="navbar-area">
+        <div class="">
+          <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand mr-lg-4 mx-2" href="#">
+              <img src="assets/animalec_line.88024da4.png" style="width: 200px" alt="logo" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a href="#" class="btn btn-md btn-tertiary text-white">ANIMAIS</a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="btn btn-md btn-tertiary text-white">QUIZZES</a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="btn btn-md btn-tertiary text-white">CONTACTOS</a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="btn btn-md btn-tertiary text-white">ADMIN</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <!-- Header-->
+
+    <!-- Main Content -->
+    <section class="main">
+      <div class="container p-4 text-center">
+        <h1 class="mb-3">Gestão do Animalec</h1>
+        <hr class="hr5" />
+
+        <div id="cards">
+          <div class="row mt-5 mx-auto" style="width: 80%">
+            <div class="col-12 col-lg-6 col-md-6 col-sm-12 mb-4">
+              <div class="card h-100">
+                <div class="card-block">
+                  <h5 class="card-title text-white text-uppercase mt-3">Utilizadores</h5>
+                  <i class="fa-solid fa-users mt-2"></i>
+                </div>
+                <a href="#" class="stretched-link"></a>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 col-md-6 col-sm-12 mb-4">
+              <div class="card h-100">
+                <div class="card-block">
+                  <h5 class="card-title text-white text-uppercase mt-3">Animais</h5>
+                  <i class="fa-sharp fa-solid fa-dog mt-2"></i>
+                </div>
+                <a href="#" class="stretched-link"></a>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 col-md-6 col-sm-12 mb-4">
+              <div class="card h-100">
+                <div class="card-block">
+                  <h5 class="card-title text-white text-uppercase mt-3">Quizzes</h5>
+                  <i class="fa-solid fa-file mt-2"></i>
+                </div>
+                <a href="#" class="stretched-link"></a>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 col-md-6 col-sm-12 mb-4">
+              <div class="card h-100">
+                <div class="card-block">
+                  <h5 class="card-title text-white text-uppercase mt-3">Questões</h5>
+                  <i class="fa-solid fa-circle-question mt-2"></i>
+                </div>
+                <a href="#" class="stretched-link"></a>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 col-md-6 col-sm-12 mb-4">
+              <div class="card h-100">
+                <div class="card-block">
+                  <h5 class="card-title text-white text-uppercase mt-3">Sponsors</h5>
+                  <i class="fa-solid fa-user-check mt-2"></i>
+                </div>
+                <a href="./pages/sponsors.html" class="stretched-link"></a>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 col-md-6 col-sm-12 mb-4">
+              <div class="card h-100">
+                <div class="card-block">
+                  <h5 class="card-title text-white text-uppercase mt-3">Experts</h5>
+                  <i class="fa-solid fa-user-doctor mt-2"></i>
+                </div>
+                <a href="./pages/experts.html" class="stretched-link"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Main Content -->
+
+    <!-- Footer -->
+    <footer class="text-center text-lg-start bg-light text-muted p-4">
+      <section class="">
+        <div class="text-center text-md-start mt-5">
+          <div class="row mt-3 text-center">
+            <div class="col-md-3 col-sm-4 col-lg-3 col-xl-3 mx-auto mb-4 d-none d-sm-block">
+              <h6 class="text-uppercase fw-bold mb-4">Criadores</h6>
+              <p>Ricardo Quéiros</p>
+              <p>Filipe Portela</p>
+            </div>
+
+            <div class="col-md-2 col-sm-4 col-lg-2 col-xl-2 mx-auto mb-4 d-none d-sm-block">
+              <h6 class="text-uppercase fw-bold mb-4">Presença Digital</h6>
+
+              <i class="fab fa-facebook-f"></i>
+              <i class="fab fa-twitter"></i>
+              <i class="fab fa-linkedin-in"></i>
+              <i class="fab fa-dribbble"></i>
+            </div>
+
+            <div class="col-md-3 col-sm-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4 d-none d-sm-block">
+              <h6 class="text-uppercase fw-bold mb-4">Sobre o Animalec</h6>
+              <p>Animalec usa tema de Bootstrap</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Copyright -->
+      <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05)">
+        © 2025 Copyright:
+        <a class="text-reset fw-bold" href="#">Animalec</a>
+      </div>
+      <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+  </body>
+</html>
