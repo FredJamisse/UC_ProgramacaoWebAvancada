@@ -6,6 +6,8 @@ module.exports = {
             question: 'questions',
             quiz: 'quizzes',
             user: 'users',
+            expert: "experts",
+            sponsor: "sponsors",
             user_levels: "user_levels"
         }
     },

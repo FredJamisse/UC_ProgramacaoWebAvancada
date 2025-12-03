@@ -6,7 +6,6 @@
       <!-- MENU TOPO -->
       <b-row class="mb-4">
         <b-col cols="2"></b-col>
-
         <b-col>
           <router-link
             :to="{ name: 'addSponsor' }"
@@ -24,55 +23,65 @@
             <i class="fas fa-bars"></i> MENU PRINCIPAL
           </router-link>
         </b-col>
-
         <b-col cols="2"></b-col>
       </b-row>
 
-      <!-- TABLE -->
+      <!-- TABELA -->
       <b-row>
         <b-col cols="2"></b-col>
-
         <b-col>
           <table class="table table-striped">
             <thead class="thead-dark">
               <tr>
-                <th>
+                <th scope="col">
                   NOME
-                  <i class="fas fa-arrow-up" v-if="sortType === 1" @click="sort()"></i>
-                  <i class="fas fa-arrow-down" v-else @click="sort()"></i>
+                  <i
+                    class="fas fa-arrow-up"
+                    v-if="sortType === 1"
+                    @click="sort()"
+                  ></i>
+                  <i
+                    class="fas fa-arrow-down"
+                    v-else
+                    @click="sort()"
+                  ></i>
                 </th>
-
-                <th>CONTACTO</th>
-                <th>ANIMAL PATROCINADO</th>
-                <th>AÇÕES</th>
+                <th scope="col">CONTACTO</th>
+                <th scope="col">ANIMAL PATROCINADO</th>
+                <th scope="col">AÇÕES</th>
               </tr>
             </thead>
-
             <tbody>
-              <tr v-for="s in sponsors" :key="s._id">
-                <td class="pt-4">{{ s.name }}</td>
-                <td class="pt-4">{{ s.contact }}</td>
-                <td class="pt-4">{{ s.animal }}</td>
-
+              <tr v-for="sponsor in sponsors" :key="sponsor._id">
+                <td class="pt-4">{{ sponsor.nome }}</td>
+                <td class="pt-4">{{ sponsor.contacto }}</td>
+                <td class="pt-4">
+                  <!-- se o backend fizer populate -->
+                  <span v-if="sponsor.animalPatrocinado && sponsor.animalPatrocinado.name">
+                    {{ sponsor.animalPatrocinado.name }}
+                  </span>
+                  <!-- caso apenas venha o id -->
+                  <span v-else>
+                    {{ sponsor.animalPatrocinado }}
+                  </span>
+                </td>
                 <td>
                   <router-link
-                    :to="{ name: 'editSponsor', params: { sponsorId: s._id } }"
+                    :to="{ name: 'editSponsor', params: { sponsorId: sponsor._id } }"
                     tag="button"
                     class="btn btn-outline-success mr-2 mt-2"
                   >
                     <i class="fas fa-edit"></i> EDITAR
                   </router-link>
-
                   <button
-                    @click="viewSponsor(s._id)"
-                    type="button"
-                    class="btn btn-outline-success mr-2 mt-2"
-                  >
-                    <i class="fas fa-search"></i> VER
+                      @click="viewSponsor(sponsor)"
+                      type="button"
+                      class="btn btn-outline-primary mr-2 mt-2"
+                    >
+                      <i class="fas fa-search"></i> VER
                   </button>
-
                   <button
-                    @click="removeSponsor(s._id)"
+                    @click="removeSponsor(sponsor._id)"
                     type="button"
                     class="btn btn-outline-danger mr-2 mt-2"
                   >
@@ -83,10 +92,8 @@
             </tbody>
           </table>
         </b-col>
-
         <b-col cols="2"></b-col>
       </b-row>
-
     </b-container>
   </section>
 </template>
@@ -100,23 +107,19 @@ import {
 } from "@/store/sponsors/sponsor.constants";
 
 export default {
-  name: "ManageSponsors",
-
+  name: "ListSponsors",
   components: {
     HeaderPage
   },
-
   data() {
     return {
       sponsors: [],
       sortType: 1
     };
   },
-
   computed: {
     ...mapGetters("sponsor", ["getSponsors", "getMessage"])
   },
-
   methods: {
     fetchSponsors() {
       this.$store.dispatch(`sponsor/${FETCH_SPONSORS}`).then(
@@ -128,37 +131,32 @@ export default {
         }
       );
     },
-
     sort() {
-      this.sponsors.sort(this.compareNames);
+      this.sponsors.sort((a, b) => {
+        if (a.nome > b.nome) return 1 * this.sortType;
+        if (a.nome < b.nome) return -1 * this.sortType;
+        return 0;
+      });
       this.sortType *= -1;
     },
 
-    compareNames(a, b) {
-      if (a.name > b.name) return 1 * this.sortType;
-      if (a.name < b.name) return -1 * this.sortType;
-      return 0;
-    },
+    viewSponsor(sponsor) {
+  const animalName = sponsor.animalPatrocinado?.name || "Sem informação";
 
-    viewSponsor(id) {
-      const s = this.sponsors.find(item => item._id === id);
+  const html = `
+    <h4><b>Nome:</b> ${sponsor.nome}</h4>
+    <h4><b>Contacto:</b> ${sponsor.contacto}</h4>
+    <h4><b>Animal Patrocinado:</b> ${animalName}</h4>
+  `;
 
-      this.$fire({
-        title: s.name,
-        html: this.generateTemplate(s),
-        imageUrl: "https://cdn-icons-png.flaticon.com/512/3448/3448599.png",
-        imageWidth: 200,
-        imageHeight: 200,
-        imageAlt: "Sponsor"
-      });
-    },
+  this.$fire({
+    title: "Detalhes do Sponsor",
+    html,
+    icon: "info",
+    confirmButtonText: "OK"
+  });
+},
 
-    generateTemplate(s) {
-      return `
-        <h4>Contacto: ${s.contact}</h4>
-        <h5>Animal Patrocinado: <b>${s.animal}</b></h5>
-      `;
-    },
 
     removeSponsor(id) {
       this.$confirm(
@@ -168,10 +166,12 @@ export default {
         { confirmButtonText: "OK", cancelButtonText: "Cancelar" }
       ).then(
         () => {
-          this.$store.dispatch(`sponsor/${REMOVE_SPONSOR}`, id).then(() => {
-            this.$alert(this.getMessage, "Sponsor removido!", "success");
-            this.fetchSponsors();
-          });
+          this.$store.dispatch(`sponsor/${REMOVE_SPONSOR}`, id).then(
+            () => {
+              this.$alert(this.getMessage, "Sponsor removido!", "success");
+              this.fetchSponsors();
+            }
+          );
         },
         () => {
           this.$alert("Remoção cancelada!", "Informação", "info");
@@ -179,7 +179,6 @@ export default {
       );
     }
   },
-
   created() {
     this.fetchSponsors();
   }

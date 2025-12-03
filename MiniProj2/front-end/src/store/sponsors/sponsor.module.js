@@ -16,63 +16,40 @@ const state = {
 
 const getters = {
   getSponsors: state => state.sponsors,
-  getSponsorsById: state => id => state.sponsors.find(s => s._id === id),
+  getSponsorById: state => id => state.sponsors.find(s => s._id === id),
   getMessage: state => state.message
 };
 
 const actions = {
 
   async [FETCH_SPONSORS]({ commit, rootState }) {
-    try {
-      const res = await sponsorService.getSponsors(rootState.auth.token);
-      commit(SET_SPONSORS, res);
-      return res;
-    } catch (err) {
-      commit(SET_MESSAGE, err.message);
-      throw err;
-    }
+    const res = await sponsorService.getSponsors(rootState.auth.token);
+    commit(SET_SPONSORS, res.body); 
+    return res.body;
   },
 
   async [ADD_SPONSOR]({ commit, rootState }, payload) {
-    try {
-      const res = await sponsorService.addSponsor(rootState.auth.token, payload);
-      commit(SET_MESSAGE, `O sponsor ${res.name} foi adicionado com sucesso!`);
-      return res;
-    } catch (err) {
-      commit(SET_MESSAGE, err.message);
-      throw err;
-    }
+    const res = await sponsorService.addSponsor(rootState.auth.token, payload);
+    commit(SET_MESSAGE, `O sponsor ${res.body.nome} foi adicionado com sucesso!`);
+    return res.body;
   },
 
   async [EDIT_SPONSOR]({ commit, rootState }, payload) {
-    try {
-      const res = await sponsorService.editSponsor(rootState.auth.token, payload);
-      commit(SET_MESSAGE, `O sponsor ${res.name} foi atualizado com sucesso!`);
-      return res;
-    } catch (err) {
-      commit(SET_MESSAGE, err.message);
-      throw err;
-    }
+    const res = await sponsorService.editSponsor(rootState.auth.token, payload);
+    commit(SET_MESSAGE, `O sponsor ${res.body.nome} foi atualizado com sucesso!`);
+    return res.body;
   },
 
   async [REMOVE_SPONSOR]({ commit, rootState }, id) {
-    try {
-      const res = await sponsorService.removeSponsor(rootState.auth.token, id);
-      commit(SET_MESSAGE, "O sponsor foi removido com sucesso!");
-      return res;
-    } catch (err) {
-      commit(SET_MESSAGE, err.message);
-      throw err;
-    }
+    await sponsorService.removeSponsor(rootState.auth.token, id);
+    commit(SET_MESSAGE, "O sponsor foi removido com sucesso!");
   }
 };
-
 
 export const mutations = {
   [SET_SPONSORS](state, sponsors) {
     state.sponsors = sponsors;
   },
-
   [SET_MESSAGE](state, message) {
     state.message = message;
   }

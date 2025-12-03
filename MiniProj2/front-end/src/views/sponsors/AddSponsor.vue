@@ -5,14 +5,11 @@
 
       <b-row>
         <b-col cols="2"></b-col>
-
         <b-col>
           <form @submit.prevent="add">
-
-            <!-- Nome do Sponsor -->
             <div class="form-group">
               <input
-                v-model="name"
+                v-model="nome"
                 type="text"
                 class="form-control form-control-lg"
                 placeholder="Nome do sponsor"
@@ -20,10 +17,9 @@
               />
             </div>
 
-            <!-- Contacto -->
             <div class="form-group">
               <input
-                v-model="contact"
+                v-model="contacto"
                 type="text"
                 class="form-control form-control-lg"
                 placeholder="Contacto"
@@ -31,25 +27,23 @@
               />
             </div>
 
-            <!-- Animal Patrocinado -->
             <div class="form-group">
               <select
+                v-model="animalPatrocinado"
                 class="form-control form-control-lg"
-                v-model="animal"
                 required
               >
-                <option value="">-- Seleciona animal patrocinado --</option>
+                <option disabled value="">-- SELECIONA ANIMAL --</option>
                 <option
-                  v-for="item in allAnimals"
-                  :key="item.id"
-                  :value="item.name"
+                  v-for="animal in animals"
+                  :key="animal._id"
+                  :value="animal._id"
                 >
-                  {{ item.name }}
+                  {{ animal.name }}
                 </option>
               </select>
             </div>
 
-            <!-- Botões -->
             <button type="submit" class="btn btn-outline-success btn-lg mr-2">
               <i class="fas fa-plus-square"></i> ADICIONAR
             </button>
@@ -61,10 +55,8 @@
             >
               <i class="fas fa-window-close"></i> CANCELAR
             </router-link>
-
           </form>
         </b-col>
-
         <b-col cols="2"></b-col>
       </b-row>
     </b-container>
@@ -76,52 +68,56 @@ import HeaderPage from "@/components/HeaderPage.vue";
 import router from "@/router";
 import { mapGetters } from "vuex";
 import { ADD_SPONSOR } from "@/store/sponsors/sponsor.constants";
+import { FETCH_ANIMALS } from "@/store/animals/animal.constants";
 
 export default {
   name: "AddSponsor",
-
   components: {
     HeaderPage
   },
-
   data() {
     return {
-      name: "",
-      contact: "",
-      animal: ""
+      nome: "",
+      contacto: "",
+      animalPatrocinado: "",
+      animals: []
     };
   },
-
   computed: {
     ...mapGetters("sponsor", ["getMessage"]),
-    ...mapGetters("animal", ["getAnimals"]),
-    
-    allAnimals() {
-      return this.getAnimals; // lista de animais já existente na store
+    ...mapGetters("animal", ["getAnimals"])
+  },
+  methods: {
+    fetchAnimals() {
+      this.$store.dispatch(`animal/${FETCH_ANIMALS}`).then(
+        () => {
+          this.animals = this.getAnimals;
+        },
+        err => {
+          this.$alert(`${err.message}`, "Erro", "error");
+        }
+      );
+    },
+    add() {
+      const payload = {
+        nome: this.nome,
+        contacto: this.contacto,
+        animalPatrocinado: this.animalPatrocinado
+      };
+
+      this.$store.dispatch(`sponsor/${ADD_SPONSOR}`, payload).then(
+        () => {
+          this.$alert(this.getMessage, "Sponsor adicionado!", "success");
+          router.push({ name: "listSponsors" });
+        },
+        err => {
+          this.$alert(`${err.message}`, "Erro", "error");
+        }
+      );
     }
   },
-created() {
-  this.$store.dispatch("animal/fetchAnimals");
-},
-  methods: {
-    add() {
-  const payload = {
-    name: this.name,
-    contact: this.contact,
-    animal: this.animal
-  };
-
-  this.$store
-    .dispatch(`sponsor/${ADD_SPONSOR}`, payload)
-    .then(() => {
-      this.$alert(this.getMessage, "Sponsor adicionado!", "success");
-      router.push({ name: "listSponsors" });
-    })
-    .catch(err => {
-      this.$alert(`${err.message}`, "Erro", "error");
-    });
-}
-
+  created() {
+    this.fetchAnimals();
   }
 };
 </script>
